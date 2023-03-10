@@ -51,6 +51,17 @@ const phoneNumber = (validator) => {
     }
 }
 
+const min = (minLength, validator) => {
+    return (value) => {
+        const validationRule = {min: minLength};
+        const isValid = Validation.validate(validationRule, value);
+        if(isValid) {
+            return validator(value);
+        }
+        return 'Field value must be at least ' + minLength + ' characters'
+    }
+}
+
 const done = () => {
     return (value) => ''
 }
@@ -61,5 +72,6 @@ export {
     done,
     email,
     equals,
-    phoneNumber
+    phoneNumber,
+    min
 }

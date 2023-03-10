@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Image, TextInput } from 'react-native'
 import baseStyles from '../styles/BaseStyles'
 
 
-const Input = ({icon, placeholder, text, setText, error, ...props}) => {
+const Input = ({icon, placeholder, text, setText, error, required, ...props}) => {
     // The user has attempted to input something
     const [dirty, setDirty] = useState(false);
     return (
@@ -20,8 +20,9 @@ const Input = ({icon, placeholder, text, setText, error, ...props}) => {
                     onBlur={() => setDirty(true)}
                     {...props} />
             </View>
-            {dirty && error ?
-                    <Text style={[baseStyles.baseText, styles.errorText]}>{error}</Text>
+            {dirty && error ? 
+                (text && text.length === 0 && required === false ? 
+                    null : <Text style={[baseStyles.baseText, styles.errorText]}>{error}</Text>)
                     : null
                 }
         </View>
@@ -36,13 +37,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#fff',
         borderWidth: 1, //0.5,
-        paddingTop: 5,
+        paddingTop: 3,
         paddingLeft: 10,
-        paddingBottom: 5,
+        paddingBottom: 3,
         borderColor: '#c0c0c0',
         height: '100%',
         width: '100%',
-        //borderRadius: 5,
+        borderRadius: 5,
     },
     imageStyle: {
         flex: 1,
@@ -55,12 +56,13 @@ const styles = StyleSheet.create({
     },
     textInput: {
         flex: 2,
-        height: 40
+        height: 40,
+        marginLeft: 10
     },
     errorText: {
         color: 'red',
-        fontSize: 'small',
-        fontWeight: 'bold'
+        fontSize: 10,
+        fontWeight: 'bold',
     }
 })
 

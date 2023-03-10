@@ -15,7 +15,7 @@ import phoneIcon from './assets/Phone-Icon.svg'
 import passwordIcon from './assets/Password-Icon.svg'
 import proceedIcon from './assets/Proceed-Icon.svg'
 import Svg, {Image, SvgUri} from 'react-native-svg'
-import { newValidator, email, done, required, equals, phoneNumber } from './Validators'
+import { newValidator, email, done, required, equals, phoneNumber, min } from './Validators'
 //import { useFonts } from 'expo-font'
 import AppLoading from 'expo-app-loading'
 import * as Font from 'expo-font'
@@ -44,7 +44,7 @@ export default function App() {
     email: required(email(done())),
     phoneNumber: required(phoneNumber(done())),
     altPhoneNumber: phoneNumber(done()),
-    password: required(done()),
+    password: required(min(8, done())),
     confirmPassword: equals(done())
   }
 
@@ -114,7 +114,8 @@ export default function App() {
               icon={<PhoneSvg />} placeholder='+2340000004200'
               text={userData.altPhoneNumber}
               setText={(text) => setUserData({...userData, altPhoneNumber: text})}
-              error={userDataValidators.altPhoneNumber(userData.altPhoneNumber)} />
+              error={userDataValidators.altPhoneNumber(userData.altPhoneNumber)}
+              required={false} />
           ]}
           />
         <InputSection
@@ -124,13 +125,15 @@ export default function App() {
               key={1}
               icon={<PasswordSvg /> } placeholder='Create a password'
               text={userData.password}
+              secureTextEntry={true}
               setText={(text) => setUserData({...userData, password: text})}
               error={userDataValidators.password(userData.password)} />,
             <Input
               key={2}
               icon={<PasswordSvg />} placeholder='Confirm password'
-              text={userData.password}
-              setText={(text) => setUserData({...userData, password: text})}
+              text={userData.confirmPassword}
+              secureTextEntry={true}
+              setText={(text) => setUserData({...userData, confirmPassword: text})}
               error={userDataValidators.confirmPassword(userData.confirmPassword, userData.password)} />,
           ]}
           />
